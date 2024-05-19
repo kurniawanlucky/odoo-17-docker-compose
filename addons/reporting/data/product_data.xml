@@ -1,0 +1,79 @@
+<odoo>
+    <record id="product_category_dokumen_lingkungan" model="product.category">
+        <field name="name">A. Dokumen Lingkungan</field>
+    </record>
+
+    <record id="product_product_rkl_product_template" model="product.template">
+        <field name="name">Matriks RKL/UKL UPL</field>
+        <field name="categ_id" ref="product_category_dokumen_lingkungan"/>
+        <field name="standard_price">0</field>
+        <field name="list_price">0</field>
+        <field name="detailed_type">consu</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="uom_po_id" ref="uom.product_uom_unit"/>
+    </record>
+
+    <record id="product_product_pelaksanaan_rkl_product_template" model="product.template">
+        <field name="name">Matriks Pelaksanaan RKL/UKL UPL</field>
+        <field name="categ_id" ref="product_category_dokumen_lingkungan"/>
+        <field name="standard_price">0</field>
+        <field name="list_price">0</field>
+        <field name="detailed_type">consu</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="uom_po_id" ref="uom.product_uom_unit"/>
+    </record>
+
+    <record id="product_category_pencemaran_air" model="product.category">
+        <field name="name">B. Pengendalian Pencemaran Air</field>
+    </record>
+
+    <record id="product_product_identifikasi_sumber_air_product_template" model="product.template">
+        <field name="name">Identifikasi Sumber Air Limbah</field>
+        <field name="categ_id" ref="product_category_pencemaran_air"/>
+        <field name="standard_price">0</field>
+        <field name="list_price">0</field>
+        <field name="detailed_type">consu</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="uom_po_id" ref="uom.product_uom_unit"/>
+    </record>
+
+    <record id="product_product_neraca_air_limbah_product_template" model="product.template">
+        <field name="name">Neraca Air Limbah</field>
+        <field name="categ_id" ref="product_category_pencemaran_air"/>
+        <field name="standard_price">0</field>
+        <field name="list_price">0</field>
+        <field name="detailed_type">consu</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="uom_po_id" ref="uom.product_uom_unit"/>
+    </record>
+
+    <record id="product_product_pengolah_air_limbah_product_template" model="product.template">
+        <field name="name">Sistem Pengolahan Air Limbah</field>
+        <field name="categ_id" ref="product_category_pencemaran_air"/>
+        <field name="standard_price">0</field>
+        <field name="list_price">0</field>
+        <field name="detailed_type">consu</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="uom_po_id" ref="uom.product_uom_unit"/>
+    </record>
+
+    <record id="product_product_foto_ketentuan_teknis_ipal_product_template" model="product.template">
+        <field name="name">Foto Ketentuan Teknis IPAL</field>
+        <field name="categ_id" ref="product_category_pencemaran_air"/>
+        <field name="standard_price">0</field>
+        <field name="list_price">0</field>
+        <field name="detailed_type">consu</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="uom_po_id" ref="uom.product_uom_unit"/>
+    </record>
+
+    <record id="product_product_uji_air_limbah_product_template" model="product.template">
+        <field name="name">Hasil uji air limbah</field>
+        <field name="categ_id" ref="product_category_pencemaran_air"/>
+        <field name="standard_price">0</field>
+        <field name="list_price">0</field>
+        <field name="detailed_type">consu</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="uom_po_id" ref="uom.product_uom_unit"/>
+    </record>
+</odoo>

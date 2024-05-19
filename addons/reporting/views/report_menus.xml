@@ -1,0 +1,31 @@
+<odoo>
+    <menuitem id="report_menu_root"
+        name="Reporting"
+        active="True" sequence="30">
+        <menuitem id="report_menu"
+            name="Report"
+            sequence="10">
+
+            <menuitem id="menu_report_draft"
+                action="action_report_with_onboarding"
+                groups="reporting.group_reporting_user"
+                sequence="10"/>
+
+            <menuitem id="menu_report_confirm"
+                action="action_report_posted"
+                groups="reporting.group_reporting_user"
+                sequence="20"/>
+
+        </menuitem>
+        <menuitem id="report_config_menu"
+            name="Configuration"
+            sequence="50">
+
+            <menuitem id="menu_report_configuration"
+                action="action_period"
+                groups="reporting.group_reporting_manager"
+                sequence="10"/>
+
+        </menuitem>
+    </menuitem>
+</odoo>

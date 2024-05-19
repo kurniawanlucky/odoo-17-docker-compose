@@ -1,0 +1,170 @@
+<odoo>
+    <record id="report_tree" model="ir.ui.view">
+        <field name="name">report.tree</field>
+        <field name="model">report</field>
+        <field name="priority">1000</field>
+        <field name="arch" type="xml">
+            <tree class="o_sale_order"
+                  string="Reports"
+                  sample="1"
+                  decoration-muted="state == 'cancel'">
+                <field name="message_needaction" column_invisible="True"/>
+                <field name="name" string="Number" readonly="1" decoration-bf="1"/>
+                <field name="date_order" widget="date" optional="show" readonly="state in ['cancel', 'posted']"/>
+                <field name="partner_id" readonly="1"/>
+                <field name="user_id" widget="many2one_avatar_user" optional="show"/>
+                <field name="activity_ids" widget="list_activity" optional="show"/>
+                <field name="state"
+                    decoration-success="state == 'posted'"
+                    decoration-info="state == 'draft'"
+                    decoration-primary="state == 'posted'"
+                    widget="badge"
+                    optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_report_filter" model="ir.ui.view">
+        <field name="name">report.list.select</field>
+        <field name="model">report</field>
+        <field name="priority" eval="15"/>
+        <field name="arch" type="xml">
+            <search string="Search Sales Order">
+                <field name="name" string="Order"
+                    filter_domain="['|', '|', ('name', 'ilike', self), ('client_order_ref', 'ilike', self), ('partner_id', 'child_of', self)]"/>
+                <field name="partner_id" operator="child_of"/>
+                <field name="user_id"/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Posted" name="posted" domain="[('state', '=', 'posted')]"/>
+                <filter string="My Reports" domain="[('user_id', '=', uid)]" name="my_sale_orders_filter"/>
+<!--                <filter invisible="1" string="Late Activities" name="activities_overdue"-->
+<!--                    domain="[('my_activity_date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]"-->
+<!--                    help="Show all records which has next action date is before today"/>-->
+<!--                <filter invisible="1" string="Today Activities" name="activities_today"-->
+<!--                    domain="[('my_activity_date_deadline', '=', context_today().strftime('%Y-%m-%d'))]"/>-->
+<!--                <filter invisible="1" string="Future Activities" name="activities_upcoming_all"-->
+<!--                    domain="[('my_activity_date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))]"/>-->
+<!--                <group expand="0" string="Group By">-->
+<!--                    <filter name="customer" string="Customer" domain="[]" context="{'group_by': 'partner_id'}"/>-->
+<!--                    <filter string="Order Date" name="order_month" domain="[]" context="{'group_by': 'date_order'}"/>-->
+<!--                </group>-->
+            </search>
+        </field>
+    </record>
+
+    <record id="view_report_form" model="ir.ui.view">
+        <field name="name">report.form</field>
+        <field name="model">report</field>
+        <field name="arch" type="xml">
+            <form string="Report" class="o_sale_order">
+            <header>
+                <button name="action_confirm" data-hotkey="q"
+                    string="Confirm" type="object"
+                    invisible="state != 'draft'"/>
+                <field name="state" widget="statusbar" statusbar_visible="draft,posted"/>
+            </header>
+            <sheet>
+                <div class="oe_title">
+                    <h1>
+                        <field name="name" readonly="1"/>
+                    </h1>
+                </div>
+                <group name="report_header">
+                    <group name="partner_details">
+                        <field name="partner_id"
+                               widget="res_partner_many2one"
+                               context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'show_vat': True}"
+                               placeholder="Type to find a customer..." readonly="state in ['cancel', 'posted']"/>
+                        <field name="period_id"/>
+                        <field name="year"/>
+                    </group>
+                    <group name="order_details">
+                        <field name="company_id" invisible="1"/>
+                        <field name="validity_date" invisible="state == 'posted'" readonly="state in ['cancel', 'posted']"/>
+                        <div class="o_td_label" groups="base.group_no_one" invisible="state in ['posted', 'cancel']">
+                            <label for="date_order" string="Quotation Date"/>
+                        </div>
+                        <field name="date_order" nolabel="1" groups="base.group_no_one" invisible="state in ['posted', 'cancel']"
+                               readonly="state in ['cancel', 'posted']" string="Create Date"/>
+                        <div class="o_td_label" invisible="state in ['draft', 'posted']">
+                            <label for="date_order" string="Order Date"/>
+                        </div>
+                        <field name="date_order" invisible="state in ['draft', 'posted']" readonly="state in ['cancel', 'posted']" nolabel="1"/>
+                        </group>
+                </group>
+                <notebook>
+                    <page string="Lines" name="lines">
+                        <field
+                            name="order_line"
+                            widget="section_and_note_one2many"
+                            mode="tree,form">
+                            <form>
+                                <group>
+                                    <group>
+                                        <field name="product_id"
+                                            domain="[('sale_ok', '=', True)]"
+                                            force_save="1"
+                                            widget="many2one_barcode" string="Type"/>
+                                        <field name="sequence" invisible="1"/>
+                                    </group>
+                                </group>
+                                <label for="name" string="Description"/>
+                                <field name="name"/>
+                                <field name="attachment_ids" widget="many2many_binary" string="Attach a file" class="g-col-8"/>
+                                <field name="state" invisible="1"/>
+                                <field name="company_id" invisible="1"/>
+                            </form>
+                            <tree
+                                string="Sales Order Lines"
+                                limit="200"
+                            >
+                                <control>
+                                    <create name="add_product_control" string="Add a product"/>
+                                </control>
+
+                                <field name="sequence" widget="handle" />
+                                <field
+                                    name="product_id"
+                                    force_save="1"
+                                    options="{
+                                        'no_open': True,
+                                    }"
+                                    domain="[('sale_ok', '=', True)]"
+                                    widget="sol_product_many2one" string="Type"/>
+                                <field name="name" widget="section_and_note_text" optional="show"/>
+                                <field name="attachment_ids" widget="many2many_tags"/>
+                                <field name="state" column_invisible="True"/>
+                                <field name="company_id" column_invisible="True"/>
+                            </tree>
+
+                        </field>
+                    </page>
+                </notebook>
+            </sheet>
+            <div class="oe_chatter">
+                <field name="message_follower_ids"/>
+                <field name="activity_ids"/>
+                <field name="message_ids"/>
+            </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_report_with_onboarding" model="ir.actions.act_window">
+        <field name="name">Report</field>
+        <field name="res_model">report</field>
+        <field name="view_id" ref="report_tree"/>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_report_filter"/>
+        <field name="context">{'search_default_draft': 1}</field>
+    </record>
+
+    <record id="action_report_posted" model="ir.actions.act_window">
+        <field name="name">Report Posted</field>
+        <field name="res_model">report</field>
+        <field name="view_id" ref="report_tree"/>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_report_filter"/>
+        <field name="context">{'search_default_posted': 1}</field>
+    </record>
+</odoo>

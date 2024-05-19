@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_report_manager,report.manager,model_report,reporting.group_reporting_manager,1,1,1,1
+access_report_user,report.user,model_report,reporting.group_reporting_user,1,1,1,0
+access_report_line_manager,report.line.manager,model_report_line,reporting.group_reporting_manager,1,1,1,1
+access_report_line_user,report.line.user,model_report_line,reporting.group_reporting_user,1,1,1,0
+access_master_period_manager,period.manager,model_master_period,reporting.group_reporting_manager,1,1,1,1
+access_master_period_user,perioduser,model_master_period,reporting.group_reporting_user,1,1,1,0
