@@ -15,6 +15,13 @@ class Report(models.Model):
     _description = "Reports"
     _order = 'date_order desc, id desc'
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('name', _("New")) == _("New"):
+                vals['name'] = self.env['ir.sequence'].next_by_code('report') or _("New")
+        return super().create(vals_list)
+
     @api.model
     def year_selection(self):
         year = 2000  # replace 2000 with your a start year
